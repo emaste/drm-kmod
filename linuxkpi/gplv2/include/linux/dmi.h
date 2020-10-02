@@ -1,3 +1,8 @@
+
+#include <sys/param.h>
+
+#if __FreeBSD_version < 1300118
+
 #ifndef __DMI_H__
 #define __DMI_H__
 
@@ -52,3 +57,8 @@ static inline const struct dmi_system_id *
 #endif
 
 #endif
+
+#else
+
+#include_next <linux/dmi.h>
+#endif /* __FreeBSD_version */
