@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-SYSDIR?=/usr/src/sys
+SYSDIR?=${SRCTOP}/sys
 .include "${SYSDIR}/conf/kern.opts.mk"
 
 _VALID_KMODS=	dmabuf ttm drm dummygfx i915 amd radeon linuxkpi_video
