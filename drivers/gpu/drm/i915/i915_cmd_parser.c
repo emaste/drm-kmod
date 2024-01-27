@@ -923,6 +923,7 @@ static int init_hash_table(struct intel_engine_cs *engine,
 			if (!desc_node)
 				return -ENOMEM;
 
+			memset(desc_node, 0, sizeof(*desc_node));
 			desc_node->desc = desc;
 			hash_add(engine->cmd_hash, &desc_node->node,
 				 cmd_header_key(desc->cmd.value));
