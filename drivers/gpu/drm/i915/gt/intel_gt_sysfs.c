@@ -3,6 +3,8 @@
  * Copyright © 2022 Intel Corporation
  */
 
+#include "opt_ddb.h"
+
 #include <drm/drm_device.h>
 #include <linux/device.h>
 #include <linux/kobject.h>
@@ -20,6 +22,14 @@
 
 bool is_object_gt(struct kobject *kobj)
 {
+	// https://github.com/freebsd/drm-kmod/issues/280
+	if (kobj->name == NULL) {
+		printf("kobj %p has NULL name\n", kobj);
+#ifdef KDB
+                kdb_backtrace();
+#endif
+		return false;
+	}
 	return !strncmp(kobj->name, "gt", 2);
 }
 
