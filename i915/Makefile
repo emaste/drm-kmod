@@ -344,6 +344,7 @@ CFLAGS+= ${KCONFIG:C/(.*)/-DCONFIG_\1/}
 
 SRCS	+=			\
 	opt_acpi.h		\
+	opt_ddb.h		\
 	opt_drm.h		\
 	opt_syscons.h		\
 	acpi_if.h		\
