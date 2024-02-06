@@ -5,6 +5,9 @@ DRM= ${.CURDIR:H:H}/drivers/gpu/drm
 
 KMOD=	amdgpu
 
+# PR276828 - ctfmerge crashes when processing amdgpu. For now just disable CTF.
+MK_CTF:=no
+
 .include "../../kconfig.mk"
 .include "../../linuxkpi_version.mk"
 
