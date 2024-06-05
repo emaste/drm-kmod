@@ -217,6 +217,15 @@ static inline void intel_context_enter(struct intel_context *ce)
 
 static inline void intel_context_mark_active(struct intel_context *ce)
 {
+	static bool printed = false;
+	bool lih = lockdep_is_held(&ce->timeline->mutex);
+	bool tb = test_bit(CONTEXT_IS_PARKING, &ce->flags);
+
+	// https://github.com/freebsd/drm-kmod/issues/281
+	if (!(lih || tb) && !printed) {
+		printf("XXXEM lih = %d tb = %d\n", lih, tb);
+		printed = true;
+	}
 	lockdep_assert(lockdep_is_held(&ce->timeline->mutex) ||
 		       test_bit(CONTEXT_IS_PARKING, &ce->flags));
 	++ce->active_count;
