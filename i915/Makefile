@@ -64,6 +64,7 @@ SRCS=	\
 	intel_device_info.c \
 	intel_display.c \
 	intel_display_power.c \
+	intel_display_snapshot.c \
 	intel_dmc.c \
 	intel_dmc_wl.c \
 	intel_dpio_phy.c \
