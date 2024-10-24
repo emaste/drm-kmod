@@ -5,8 +5,12 @@ DRM= ${.CURDIR:H:H}/drivers/gpu/drm
 
 KMOD=	amdgpu
 
-# PR276828 - ctfmerge crashes when processing amdgpu. For now just disable CTF.
-MK_CTF:=no
+#
+# Work around ctfmerge(1) segfaults with recent amdgpu.ko
+#
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276828
+#
+MK_CTF=	no
 
 .include "../../kconfig.mk"
 .include "../../linuxkpi_version.mk"
@@ -980,7 +984,6 @@ CLEANFILES+= ${KMOD}.ko.full ${KMOD}.ko.debug
 CFLAGS+= -I${.CURDIR:H:H}/linuxkpi/gplv2/include
 CFLAGS+= -I${.CURDIR:H:H}/linuxkpi/bsd/include
 CFLAGS+= -I${SYSDIR}/compat/linuxkpi/common/include
-CFLAGS+= -I${.CURDIR:H:H}/linuxkpi/dummy/include
 CFLAGS+= -I${SYSDIR}/compat/linuxkpi/dummy/include
 
 CFLAGS+= -I${.CURDIR:H:H}/include
