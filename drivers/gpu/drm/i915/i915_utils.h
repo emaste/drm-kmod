@@ -232,7 +232,8 @@ static inline unsigned long msecs_to_jiffies_timeout(const unsigned int m)
 static inline void
 wait_remaining_ms_from_jiffies(unsigned long timestamp_jiffies, int to_wait_ms)
 {
-	unsigned long target_jiffies, tmp_jiffies, remaining_jiffies;
+	unsigned long target_jiffies, tmp_jiffies;
+	long remaining_jiffies;
 
 	/*
 	 * Don't re-read the value of "jiffies" every time since it may change
@@ -244,7 +245,7 @@ wait_remaining_ms_from_jiffies(unsigned long timestamp_jiffies, int to_wait_ms)
 
 	if (time_after(target_jiffies, tmp_jiffies)) {
 		remaining_jiffies = target_jiffies - tmp_jiffies;
-		while (remaining_jiffies)
+		while (remaining_jiffies > 0)
 			remaining_jiffies =
 			    schedule_timeout_uninterruptible(remaining_jiffies);
 	}
