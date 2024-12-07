@@ -34,6 +34,39 @@ CFLAGS+= ${KCONFIG:C/(.*)/-DCONFIG_\1/}
 
 CWARNFLAGS.hdmi.c=	-Wno-cast-qual
 
-EXPORT_SYMS=    YES
+# drivers/video/aperture.c
+EXPORT_SYMS+=	__aperture_remove_legacy_vga_devices
+EXPORT_SYMS+=	aperture_remove_conflicting_devices
+EXPORT_SYMS+=	aperture_remove_conflicting_pci_devices
+EXPORT_SYMS+=	devm_aperture_acquire_for_platform_device
+
+# drivers/video/hdmi.c
+EXPORT_SYMS+=	hdmi_audio_infoframe_check
+EXPORT_SYMS+=	hdmi_audio_infoframe_init
+EXPORT_SYMS+=	hdmi_audio_infoframe_pack
+EXPORT_SYMS+=	hdmi_audio_infoframe_pack_for_dp
+EXPORT_SYMS+=	hdmi_audio_infoframe_pack_only
+EXPORT_SYMS+=	hdmi_avi_infoframe_check
+EXPORT_SYMS+=	hdmi_avi_infoframe_init
+EXPORT_SYMS+=	hdmi_avi_infoframe_pack
+EXPORT_SYMS+=	hdmi_avi_infoframe_pack_only
+EXPORT_SYMS+=	hdmi_drm_infoframe_check
+EXPORT_SYMS+=	hdmi_drm_infoframe_init
+EXPORT_SYMS+=	hdmi_drm_infoframe_pack
+EXPORT_SYMS+=	hdmi_drm_infoframe_pack_only
+EXPORT_SYMS+=	hdmi_drm_infoframe_unpack_only
+EXPORT_SYMS+=	hdmi_infoframe_check
+EXPORT_SYMS+=	hdmi_infoframe_log
+EXPORT_SYMS+=	hdmi_infoframe_pack
+EXPORT_SYMS+=	hdmi_infoframe_pack_only
+EXPORT_SYMS+=	hdmi_infoframe_unpack
+EXPORT_SYMS+=	hdmi_spd_infoframe_check
+EXPORT_SYMS+=	hdmi_spd_infoframe_init
+EXPORT_SYMS+=	hdmi_spd_infoframe_pack
+EXPORT_SYMS+=	hdmi_spd_infoframe_pack_only
+EXPORT_SYMS+=	hdmi_vendor_infoframe_check
+EXPORT_SYMS+=	hdmi_vendor_infoframe_init
+EXPORT_SYMS+=	hdmi_vendor_infoframe_pack
+EXPORT_SYMS+=	hdmi_vendor_infoframe_pack_only
 
 .include <bsd.kmod.mk>
