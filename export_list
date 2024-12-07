@@ -1,0 +1,37 @@
+### drivers/gpu/drm/drm_encoder_slave.c
+EXPORT_SYMS+=	drm_i2c_encoder_commit
+EXPORT_SYMS+=	drm_i2c_encoder_destroy
+EXPORT_SYMS+=	drm_i2c_encoder_detect
+EXPORT_SYMS+=	drm_i2c_encoder_dpms
+EXPORT_SYMS+=	drm_i2c_encoder_init
+EXPORT_SYMS+=	drm_i2c_encoder_mode_fixup
+EXPORT_SYMS+=	drm_i2c_encoder_mode_set
+EXPORT_SYMS+=	drm_i2c_encoder_prepare
+EXPORT_SYMS+=	drm_i2c_encoder_restore
+EXPORT_SYMS+=	drm_i2c_encoder_save
+
+### drivers/gpu/drm/drm_format_helper.c
+EXPORT_SYMS+=	drm_fb_blit
+EXPORT_SYMS+=	drm_fb_build_fourcc_list
+EXPORT_SYMS+=	drm_fb_clip_offset
+EXPORT_SYMS+=	drm_fb_memcpy
+EXPORT_SYMS+=	drm_fb_swab
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_argb1555
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_argb2101010
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_argb8888
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_gray8
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_mono
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_rgb332
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_rgb565
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_rgb888
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_rgba5551
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_xrgb1555
+EXPORT_SYMS+=	drm_fb_xrgb8888_to_xrgb2101010
+
+### drivers/gpu/drm/drm_writeback.c
+EXPORT_SYMS+=	drm_writeback_cleanup_job
+EXPORT_SYMS+=	drm_writeback_connector_init
+EXPORT_SYMS+=	drm_writeback_get_out_fence
+EXPORT_SYMS+=	drm_writeback_prepare_job
+EXPORT_SYMS+=	drm_writeback_queue_job
+EXPORT_SYMS+=	drm_writeback_signal_completion
