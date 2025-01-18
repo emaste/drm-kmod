@@ -287,6 +287,7 @@ int drm_debugfs_remove_files(const struct drm_info_list *files, int count,
 	int i;
 
 	for (i = 0; i < count; i++) {
+#if 0
 		struct dentry *dent = debugfs_lookup(files[i].name, root);
 
 		if (!dent)
@@ -294,6 +295,7 @@ int drm_debugfs_remove_files(const struct drm_info_list *files, int count,
 
 		drmm_kfree(minor->dev, d_inode(dent)->i_private);
 		debugfs_remove(dent);
+#endif
 	}
 	return 0;
 }
