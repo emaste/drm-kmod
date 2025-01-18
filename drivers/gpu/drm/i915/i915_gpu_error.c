@@ -189,64 +189,64 @@ i915_error_printer(struct drm_i915_error_state_buf *e)
 }
 
 /* single threaded page allocator with a reserved stash for emergencies */
-static void pool_fini(struct folio_batch *fbatch)
+static void pool_fini(struct pagevec *pv)
 {
-	folio_batch_release(fbatch);
+	pagevec_release(pv);
 }
 
-static int pool_refill(struct folio_batch *fbatch, gfp_t gfp)
+static int pool_refill(struct pagevec *pv, gfp_t gfp)
 {
-	while (folio_batch_space(fbatch)) {
-		struct folio *folio;
+	while (pagevec_space(pv)) {
+		struct page *p;
 
-		folio = folio_alloc(gfp, 0);
-		if (!folio)
+		p = alloc_page(gfp);
+		if (!p)
 			return -ENOMEM;
 
-		folio_batch_add(fbatch, folio);
+		pagevec_add(pv, p);
 	}
 
 	return 0;
 }
 
-static int pool_init(struct folio_batch *fbatch, gfp_t gfp)
+static int pool_init(struct pagevec *pv, gfp_t gfp)
 {
 	int err;
 
-	folio_batch_init(fbatch);
+	pagevec_init(pv);
 
-	err = pool_refill(fbatch, gfp);
+	err = pool_refill(pv, gfp);
 	if (err)
-		pool_fini(fbatch);
+		pool_fini(pv);
 
 	return err;
 }
 
-static void *pool_alloc(struct folio_batch *fbatch, gfp_t gfp)
+static void *pool_alloc(struct pagevec *pv, gfp_t gfp)
 {
-	struct folio *folio;
+	struct page *p;
 
-	folio = folio_alloc(gfp, 0);
-	if (!folio && folio_batch_count(fbatch))
-		folio = fbatch->folios[--fbatch->nr];
+	p = alloc_page(gfp);
+	if (!p && pagevec_count(pv))
+		p = pv->pages[--pv->nr];
 
-	return folio ? folio_address(folio) : NULL;
+	return p ? page_address(p) : NULL;
 }
 
-static void pool_free(struct folio_batch *fbatch, void *addr)
+static void pool_free(struct pagevec *pv, void *addr)
 {
-	struct folio *folio = virt_to_folio(addr);
+	struct page *p = virt_to_page(addr);
 
-	if (folio_batch_space(fbatch))
-		folio_batch_add(fbatch, folio);
+	if (pagevec_space(pv))
+		pagevec_add(pv, p);
 	else
-		folio_put(folio);
+		__free_page(p);
 }
 
 #ifdef CONFIG_DRM_I915_COMPRESS_ERROR
 
 struct i915_vma_compress {
-	struct folio_batch pool;
+	struct pagevec pool;
 	struct z_stream_s zstream;
 	void *tmp;
 };
@@ -387,7 +387,7 @@ static void err_compression_marker(struct drm_i915_error_state_buf *m)
 #else
 
 struct i915_vma_compress {
-	struct folio_batch pool;
+	struct pagevec pool;
 };
 
 static bool compress_init(struct i915_vma_compress *c)
