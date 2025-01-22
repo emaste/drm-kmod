@@ -324,9 +324,7 @@ static int intelfb_create(struct drm_fb_helper *helper,
 	 * values passed to register_fictitious_range() below are unavailable
 	 * from a generic structure set by both drivers.
 	 */
-	if (info->aperture_base) {
-		register_fictitious_range(info->aperture_base, info->aperture_size);
-	}
+	register_fictitious_range(info->aperture_base, info->aperture_size);
 #endif
 
 	for_i915_gem_ww(&ww, ret, false) {
