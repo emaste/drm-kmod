@@ -642,8 +642,8 @@ void intel_pipe_update_end(struct intel_atomic_state *state,
 
 #ifdef __linux__
 	local_irq_enable();
-#elifdef __FreeBSD__
-	local_irq_enable();
+#elif defined(__FreeBSD__)
+	preempt_enable();
 #endif
 
 	if (intel_vgpu_active(dev_priv))
