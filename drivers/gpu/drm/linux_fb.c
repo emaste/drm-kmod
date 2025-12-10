@@ -334,6 +334,10 @@ fb_setpixel(struct linux_fb_info *info, uint32_t x, uint32_t y,
 	uint32_t bytes_per_pixel;
 	unsigned int offset;
 
+	/* amdgpu does not populate these */
+	if (info->screen_base == 0 || info->screen_size == 0)
+		return;
+
 	bytes_per_pixel = info->var.bits_per_pixel / 8;
 	offset = info->fix.line_length * y + x * bytes_per_pixel;
 
