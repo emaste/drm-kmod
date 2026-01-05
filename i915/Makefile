@@ -379,6 +379,11 @@ SRCS	+=			\
 # error: cast from 'const unsigned long *' to 'volatile unsigned long *'
 CWARNFLAGS += -Wno-pointer-arith -Wno-format -Wno-cast-qual
 
+# error: default initialization of an object of type 'typeof (ring->size)'
+#   (aka 'const unsigned int') leaves the object uninitialized
+#   [-Werror,-Wdefault-const-init-var-unsafe]
+CWARNFLAGS += -Wno-default-const-init-var-unsafe
+
 CWARNFLAGS.intel_acpi.c=	-Wno-incompatible-pointer-types
 CWARNFLAGS.intel_audio.c=	-Wno-unused-function
 CWARNFLAGS.intel_backlight.c=	-Wno-unused-but-set-variable
