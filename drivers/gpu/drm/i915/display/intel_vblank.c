@@ -299,6 +299,7 @@ static void intel_vblank_section_enter(struct intel_display *display)
 	__acquires(i915->uncore.lock)
 {
 	struct drm_i915_private *i915 = to_i915(display->drm);
+	spin_lock(&i915->uncore.lock);
 #ifdef __FreeBSD__
 	preempt_disable();
 #endif
@@ -313,6 +314,7 @@ static void intel_vblank_section_exit(struct intel_display *display)
 #ifdef __FreeBSD__
 	preempt_enable();
 #endif
+	spin_unlock(&i915->uncore.lock);
 }
 #else
 static void intel_vblank_section_enter(struct intel_display *display)
