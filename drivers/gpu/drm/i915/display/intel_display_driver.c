@@ -210,9 +210,11 @@ int intel_display_driver_probe_noirq(struct drm_i915_private *i915)
 	if (i915_inject_probe_failure(i915))
 		return -ENODEV;
 
+	printf("%s() pipe_mask=0x%x\n", __func__, DISPLAY_RUNTIME_INFO(i915)->pipe_mask);
 	if (HAS_DISPLAY(i915)) {
 		ret = drm_vblank_init(&i915->drm,
 				      INTEL_NUM_PIPES(i915));
+		printf("%s() drm_vblank_init() lock=%p returned %d\n", __func__, &i915->drm.vblank_time_lock, ret);
 		if (ret)
 			return ret;
 	}
