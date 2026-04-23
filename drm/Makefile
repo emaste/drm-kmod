@@ -25,12 +25,14 @@ SRCS=	drm_atomic.c \
 	drm_crtc.c \
 	drm_crtc_helper.c \
 	drm_damage_helper.c \
+	drm_draw.c \
 	drm_drv.c \
 	drm_dumb_buffers.c \
 	drm_edid.c \
 	drm_eld.c \
 	drm_displayid.c \
 	drm_encoder.c \
+	drm_fbdev_client.c \
 	drm_file.c \
 	drm_flip_work.c \
 	drm_fourcc.c \
@@ -51,6 +53,7 @@ SRCS=	drm_atomic.c \
 	drm_modeset_helper.c \
 	drm_os_freebsd.c \
 	drm_panel.c \
+	drm_panel_backlight_quirks.c \
 	drm_pci.c \
 	drm_plane.c \
 	drm_plane_helper.c \
@@ -130,6 +133,10 @@ SRCS+=	drm_exec.c
 
 .if !empty(KCONFIG:MDRM_PANIC)
 SRCS+=	drm_panic.c
+.endif
+
+.if !empty(KCONFIG:MDRM_CLIENT_SETUP)
+SRCS+=	drm_client_setup.c
 .endif
 
 CLEANFILES+= ${KMOD}.ko.full ${KMOD}.ko.debug
