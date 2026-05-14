@@ -967,13 +967,14 @@ int intel_gt_probe_all(struct drm_i915_private *i915)
 			 * FreeBSD lacks MEI driver support needed for GSC proxy,
 			 * which causes GuC authentication to fail on GT1.
 			 */
-			if (GRAPHICS_VER_FULL(i915) >= IP_VER(12, 70)) {
+			if (!IS_ENABLED(CONFIG_INTEL_MEI_HDCP)) {
 				drm_info(&i915->drm,
 						"Skipping GT1 (Standalone Media GT) - MEI driver not available on FreeBSD\n");
 				ret = 0;
 				continue;
 			}
 #endif
+
 			ret = intel_sa_mediagt_setup(gt, phys_addr + gtdef->mapping_base,
 						     gtdef->gsi_offset);
 			break;
