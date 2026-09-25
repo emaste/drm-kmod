@@ -2561,8 +2561,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 
 	if (amdgpu_sriov_vf(adev)) {
 		r = amdgpu_virt_request_full_gpu(adev, true);
-		if (r)
+		if (r) {
+			printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 	}
 
 	switch (adev->asic_type) {
@@ -2574,8 +2576,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 	case CHIP_HAINAN:
 		adev->family = AMDGPU_FAMILY_SI;
 		r = si_set_ip_blocks(adev);
-		if (r)
+		if (r) {
+			printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 		break;
 #endif
 #ifdef CONFIG_DRM_AMDGPU_CIK
@@ -2590,8 +2594,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 			adev->family = AMDGPU_FAMILY_CI;
 
 		r = cik_set_ip_blocks(adev);
-		if (r)
+		if (r) {
+			printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 		break;
 #endif
 	case CHIP_TOPAZ:
@@ -2609,12 +2615,15 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 			adev->family = AMDGPU_FAMILY_VI;
 
 		r = vi_set_ip_blocks(adev);
-		if (r)
+		if (r) {
+			printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 		break;
 	default:
 		r = amdgpu_discovery_set_ip_blocks(adev);
 		if (r) {
+			printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 			adev->num_ip_blocks = 0;
 			return r;
 		}
@@ -2672,13 +2681,17 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 		/* get the vbios after the asic_funcs are set up */
 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON) {
 			r = amdgpu_device_parse_gpu_info_fw(adev);
-			if (r)
+			if (r) {
+				printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 				return r;
+			}
 
 			/* Read BIOS */
 			if (amdgpu_device_read_bios(adev)) {
-				if (!amdgpu_get_bios(adev))
+				if (!amdgpu_get_bios(adev)) {
+					printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 					return -EINVAL;
+				}
 
 				r = amdgpu_atombios_init(adev);
 				if (r) {
@@ -2694,8 +2707,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 
 		}
 	}
-	if (!total)
+	if (!total) {
+		printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 		return -ENODEV;
+	}
 
 	ip_block = amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_GFX);
 	if (ip_block->status.valid != false)
