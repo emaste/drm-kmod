@@ -1314,8 +1314,10 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
 	int r;
 
 	r = amdgpu_discovery_init(adev);
-	if (r)
+	if (r) {
+		printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 		return r;
+	}
 
 	adev->gfx.xcc_mask = 0;
 	adev->sdma.sdma_mask = 0;
