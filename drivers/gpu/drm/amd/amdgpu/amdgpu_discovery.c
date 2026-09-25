@@ -2718,6 +2718,8 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 	amdgpu_discovery_init_soc_config(adev);
 	amdgpu_discovery_sysfs_init(adev);
 
+	printf("ip_version=0z%x\n", amdgpu_ip_version(adev, GC_HWIP, 0));
+	// 0b58a55af5d48
 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
 	case IP_VERSION(9, 0, 1):
 	case IP_VERSION(9, 2, 1):
