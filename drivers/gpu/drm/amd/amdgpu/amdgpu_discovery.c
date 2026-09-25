@@ -457,8 +457,10 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
 		drm_dbg(&adev->ddev, "use ip discovery information from memory\n");
 		r = amdgpu_discovery_read_binary_from_mem(
 			adev, adev->mman.discovery_bin);
-		if (r)
+		if (r) {
+			printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 			goto out;
+		}
 	}
 
 	/* check the ip discovery binary signature */
@@ -2460,6 +2462,7 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 {
 	int r;
 
+	printf("asic_type=%d\n", adev->asic_type);
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
 		/* This is not fatal.  We only need the discovery
@@ -2666,8 +2669,10 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 	case CHIP_CYAN_SKILLFISH:
 		if (adev->apu_flags & AMD_APU_IS_CYAN_SKILLFISH2) {
 			r = amdgpu_discovery_reg_base_init(adev);
-			if (r)
+			if (r) {
+				printf("%s:%d %s()\n", __FILE__, __LINE__, __func__);
 				return -EINVAL;
+			}
 
 			amdgpu_discovery_harvest_ip(adev);
 			amdgpu_discovery_get_gfx_info(adev);
