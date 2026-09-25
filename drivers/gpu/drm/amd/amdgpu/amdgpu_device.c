@@ -2638,8 +2638,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 
 	if (amdgpu_sriov_vf(adev)) {
 		r = amdgpu_virt_request_full_gpu(adev, true);
-		if (r)
+		if (r) {
+			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 	}
 
 	switch (adev->asic_type) {
@@ -2651,8 +2653,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 	case CHIP_HAINAN:
 		adev->family = AMDGPU_FAMILY_SI;
 		r = si_set_ip_blocks(adev);
-		if (r)
+		if (r) {
+			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 		break;
 #endif
 #ifdef CONFIG_DRM_AMDGPU_CIK
@@ -2667,8 +2671,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 			adev->family = AMDGPU_FAMILY_CI;
 
 		r = cik_set_ip_blocks(adev);
-		if (r)
+		if (r) {
+			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 		break;
 #endif
 	case CHIP_TOPAZ:
@@ -2686,12 +2692,15 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 			adev->family = AMDGPU_FAMILY_VI;
 
 		r = vi_set_ip_blocks(adev);
-		if (r)
+		if (r) {
+			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 			return r;
+		}
 		break;
 	default:
 		r = amdgpu_discovery_set_ip_blocks(adev);
 		if (r) {
+			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 			adev->num_ip_blocks = 0;
 			return r;
 		}
@@ -2749,8 +2758,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 		/* get the vbios after the asic_funcs are set up */
 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON) {
 			r = amdgpu_device_parse_gpu_info_fw(adev);
-			if (r)
+			if (r) {
+				printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 				return r;
+			}
 
 			bios_flags = amdgpu_device_get_vbios_flags(adev);
 			skip_bios = !!(bios_flags & AMDGPU_VBIOS_SKIP);
@@ -2758,8 +2769,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 			if (!skip_bios) {
 				bool optional =
 					!!(bios_flags & AMDGPU_VBIOS_OPTIONAL);
-				if (!amdgpu_get_bios(adev) && !optional)
+				if (!amdgpu_get_bios(adev) && !optional) {
+					printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 					return -EINVAL;
+				}
 
 				if (optional && !adev->bios)
 					dev_info(
@@ -2786,8 +2799,10 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 
 		}
 	}
-	if (!total)
+	if (!total) {
+		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 		return -ENODEV;
+	}
 
 	if (adev->gmc.xgmi.supported)
 		amdgpu_xgmi_early_init(adev);
@@ -4417,8 +4432,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	 * early on during init and before calling to RREG32.
 	 */
 	adev->reset_domain = amdgpu_reset_create_reset_domain(SINGLE_DEVICE, "amdgpu-reset-dev");
-	if (!adev->reset_domain)
+	if (!adev->reset_domain) {
+		drm_dbg(ddev, "%s:%d %s()\nn", __FILE__, __LINE__, __func__);
 		return -ENOMEM;
+	}
 
 	/* detect hw virtualization here */
 	amdgpu_virt_init(adev);
@@ -4441,8 +4458,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	amdgpu_set_init_level(adev, AMDGPU_INIT_LEVEL_DEFAULT);
 	/* early init functions */
 	r = amdgpu_device_ip_early_init(adev);
-	if (r)
+	if (r) {
+		drm_dbg(ddev, "%s:%d %s()\nn", __FILE__, __LINE__, __func__);
 		return r;
+	}
 
 	/*
 	 * No need to remove conflicting FBs for non-display class devices.
@@ -4452,8 +4471,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	    (pdev->class >> 8) == PCI_CLASS_DISPLAY_OTHER) {
 		/* Get rid of things like offb */
 		r = aperture_remove_conflicting_pci_devices(adev->pdev, amdgpu_kms_driver.name);
-		if (r)
+		if (r) {
+			drm_dbg(ddev, "%s:%d %s()\nn", __FILE__, __LINE__, __func__);
 			return r;
+		}
 	}
 
 	/* Enable TMZ based on IP_VERSION */
@@ -4470,8 +4491,10 @@ int amdgpu_device_init(struct amdgpu_device *adev,
 	/* Need to get xgmi info early to decide the reset behavior*/
 	if (adev->gmc.xgmi.supported) {
 		r = adev->gfxhub.funcs->get_xgmi_info(adev);
-		if (r)
+		if (r) {
+			drm_dbg(ddev, "%s:%d %s()\nn", __FILE__, __LINE__, __func__);
 			return r;
+		}
 	}
 
 #ifdef __linux__
