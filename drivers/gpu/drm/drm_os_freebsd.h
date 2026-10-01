@@ -18,7 +18,7 @@
 
 /* XXXKIB what is the right code for the FreeBSD ? */
 /* kib@ used ENXIO here -- dumbbell@ */
-#define	EREMOTEIO	EIO
+#define	EREMOTEIO	EDOOFUS
 
 #define	KTR_DRM		KTR_DEV
 
