@@ -2749,7 +2749,6 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 	amdgpu_discovery_init_soc_config(adev);
 	amdgpu_discovery_sysfs_init(adev);
 
-	printf("XXX ip_version=0z%08x\n", amdgpu_ip_version(adev, GC_HWIP, 0));
 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
 	case IP_VERSION(9, 0, 1):
 	case IP_VERSION(9, 2, 1):
@@ -2810,7 +2809,6 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 		adev->family = AMDGPU_FAMILY_GC_12_0_0;
 		break;
 	default:
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
 		return -EINVAL;
 	}
 
@@ -3035,110 +3033,78 @@ int amdgpu_discovery_set_ip_blocks(struct amdgpu_device *adev)
 	}
 
 	r = amdgpu_discovery_set_common_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_gmc_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	/* For SR-IOV, PSP needs to be initialized before IH */
 	if (amdgpu_sriov_vf(adev)) {
 		r = amdgpu_discovery_set_psp_ip_blocks(adev);
-		if (r) {
-			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+		if (r)
 			return r;
-		}
 		r = amdgpu_discovery_set_ih_ip_blocks(adev);
-		if (r) {
-			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+		if (r)
 			return r;
-		}
 	} else {
 		r = amdgpu_discovery_set_ih_ip_blocks(adev);
-		if (r) {
-			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+		if (r)
 			return r;
-		}
 
 		if (likely(adev->firmware.load_type == AMDGPU_FW_LOAD_PSP)) {
 			r = amdgpu_discovery_set_psp_ip_blocks(adev);
-			if (r) {
-				printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+			if (r)
 				return r;
-			}
 		}
 	}
 
 	if (likely(adev->firmware.load_type == AMDGPU_FW_LOAD_PSP)) {
 		r = amdgpu_discovery_set_smu_ip_blocks(adev);
-		if (r) {
-			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+		if (r)
 			return r;
-		}
 	}
 
 	r = amdgpu_discovery_set_display_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_gc_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_sdma_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	if ((adev->firmware.load_type == AMDGPU_FW_LOAD_DIRECT &&
 	     !amdgpu_sriov_vf(adev)) ||
 	    (adev->firmware.load_type == AMDGPU_FW_LOAD_RLC_BACKDOOR_AUTO && amdgpu_dpm == 1)) {
 		r = amdgpu_discovery_set_smu_ip_blocks(adev);
-		if (r) {
-			printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+		if (r)
 			return r;
-		}
 	}
 
 	r = amdgpu_discovery_set_mm_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_mes_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_vpe_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_umsch_mm_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 
 	r = amdgpu_discovery_set_isp_ip_blocks(adev);
-	if (r) {
-		printf("XXX %s:%d %s()\n", __FILE__, __LINE__, __func__);
+	if (r)
 		return r;
-	}
 	return 0;
 }
 

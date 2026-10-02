@@ -217,7 +217,6 @@ static int __smu_cmn_reg2errno(struct smu_context *smu, u32 reg_c2pmsg_90)
 	default:
 		/* Unknown or debug response from the SMU.
 		 */
-		printf("XXX %s:%d %s() SMU result %u\n", __FILE__, __LINE__, __func__, reg_c2pmsg_90);
 		res = -EREMOTEIO;
 		break;
 	}
@@ -313,7 +312,6 @@ int smu_cmn_send_msg_without_waiting(struct smu_context *smu,
 	u32 reg;
 	int res;
 
-	printf("XXX %s:%d %s() smc_fw_state=%d\n", __FILE__, __LINE__, __func__, smu->smc_fw_state);
 	if (adev->no_hw_access)
 		return 0;
 
@@ -362,11 +360,8 @@ int smu_cmn_wait_for_response(struct smu_context *smu)
 	reg = __smu_cmn_poll_stat(smu);
 	res = __smu_cmn_reg2errno(smu, reg);
 
-	printf("XXX %s:%d %s() smc_fw_state=%d reg=0x%08x res=%d\n", __FILE__, __LINE__, __func__, smu->smc_fw_state, reg, res);
-	if (res == -EREMOTEIO) {
-		printf("XXX %s:%d %s() setting SMU_FW_HANG\n", __FILE__, __LINE__, __func__);
+	if (res == -EREMOTEIO)
 		smu->smc_fw_state = SMU_FW_HANG;
-	}
 
 	if (unlikely(smu->adev->pm.smu_debug_mask & SMU_DEBUG_HALT_ON_ERROR) &&
 	    res && (res != -ETIME)) {
@@ -422,7 +417,6 @@ int smu_cmn_send_smc_msg_with_param(struct smu_context *smu,
 	if (adev->no_hw_access)
 		return 0;
 
-	printf("XXX %s:%d %s() smc_fw_state=%d\n", __FILE__, __LINE__, __func__, smu->smc_fw_state);
 	index = smu_cmn_to_asic_specific_index(smu,
 					       CMN2ASIC_MAPPING_MSG,
 					       msg);
@@ -459,10 +453,8 @@ int smu_cmn_send_smc_msg_with_param(struct smu_context *smu,
 	reg = __smu_cmn_poll_stat(smu);
 	res = __smu_cmn_reg2errno(smu, reg);
 	if (res != 0) {
-		if (res == -EREMOTEIO) {
-			printf("XXX %s:%d %s() setting SMU_FW_HANG\n", __FILE__, __LINE__, __func__);
+		if (res == -EREMOTEIO)
 			smu->smc_fw_state = SMU_FW_HANG;
-		}
 		__smu_cmn_reg_print_error(smu, reg, index, param, msg);
 	}
 	if (read_arg) {
